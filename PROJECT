@@ -1,0 +1,19 @@
+domain: codcodog.com
+layout:
+- go.kubebuilder.io/v3
+plugins:
+  manifests.sdk.operatorframework.io/v2: {}
+  scorecard.sdk.operatorframework.io/v2: {}
+projectName: appservice-operator
+repo: github.com/codcodog/appservice-operator
+resources:
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: codcodog.com
+  group: app
+  kind: AppService
+  path: github.com/codcodog/appservice-operator/api/v1
+  version: v1
+version: "3"
