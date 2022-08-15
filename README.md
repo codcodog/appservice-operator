@@ -11,3 +11,9 @@ appservice-operator
 
 
 ### 如何使用
+
+
+### 参考
+[operator-sdk](https://sdk.operatorframework.io/docs/building-operators/golang/quickstart/)  
+[Kubernetes Operator 快速入门教程](https://www.qikqiak.com/post/k8s-operator-101/?utm_source=pocket_mylist)  
+[operator-sdk实战开发K8S CRD自定义资源对象](https://blog.51cto.com/zhangxueliang/3635432)
