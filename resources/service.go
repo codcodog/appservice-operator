@@ -1,0 +1,32 @@
+package resources
+
+import (
+	appv1 "github.com/codcodog/appservice-operator/api/v1"
+	v1 "k8s.io/api/apps/v1"
+	corev1 "k8s.io/api/core/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+)
+
+func NewService(appService *appv1.AppService) *v1.Service {
+	labels := map[string]string{
+		"app": appService.ObjectMeta.Name,
+	}
+	selector := &metav1.LabelSelector{MatchLabels: labels}
+
+	service := corev1.Service{
+		TypeMeta: metav1.TypeMeta{
+			APIVersion: "v1",
+			Kind:       "Service",
+		},
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      appService.Name,
+			Namespace: appService.Namespace,
+		},
+		Spec: corev1.ServiceSpec{
+			Ports:    appService.Spec.Ports,
+			Selector: selector,
+		},
+	}
+
+	return &service
+}
