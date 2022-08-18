@@ -21,6 +21,10 @@ func NewDeployment(appService *appv1.AppService) *v1.Deployment {
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      appService.Name,
 			Namespace: appService.Namespace,
+			// 标注主从关系
+			OwnerReferences: []metav1.OwnerReference{
+				*metav1.NewControllerRef(appService.GetObjectMeta(), appService.GroupVersionKind()),
+			},
 		},
 		Spec: v1.DeploymentSpec{
 			Replicas: appService.Spec.Replicas,

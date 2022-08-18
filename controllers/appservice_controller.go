@@ -200,5 +200,7 @@ func (r *AppServiceReconciler) isChanged(instance *appv1.AppService) (bool, erro
 func (r *AppServiceReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	return ctrl.NewControllerManagedBy(mgr).
 		For(&appv1.AppService{}).
+		Owns(&v1.Deployment{}). // 监听从属资源
+		Owns(&corev1.Service{}).
 		Complete(r)
 }
