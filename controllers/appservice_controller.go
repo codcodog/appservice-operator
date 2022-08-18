@@ -140,8 +140,10 @@ func (r *AppServiceReconciler) ensureService(ctx context.Context, req ctrl.Reque
 	}
 
 	if isChanged {
+		clusterIP := service.Spec.ClusterIP
 		newService := resources.NewService(instance)
 		service.Spec = newService.Spec
+		service.Spec.ClusterIP = clusterIP // # Spec.ClusterIP is imutable
 
 		if err := r.Client.Update(ctx, &service); err != nil {
 			return err
@@ -175,6 +177,11 @@ func (r *AppServiceReconciler) updateAnnotations(ctx context.Context, instance *
 
 // CRD是否发生变更
 func (r *AppServiceReconciler) isChanged(instance *appv1.AppService) (bool, error) {
+	// 若不存在，直接返回已变化
+	if _, ok := instance.Annotations["spec"]; !ok {
+		return true, nil
+	}
+
 	var oldSpec appv1.AppServiceSpec
 	err := json.Unmarshal([]byte(instance.Annotations["spec"]), &oldSpec)
 	if err != nil {
