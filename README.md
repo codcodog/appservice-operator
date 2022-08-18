@@ -10,8 +10,6 @@ appservice-operator
 每当创建 `AppService` 对象的时候，通过控制器去自动创建对应的 `Deployment` 和 `Service` 对象.
 
 
-### 如何使用
-
 
 ### 参考
 [operator-sdk](https://sdk.operatorframework.io/docs/building-operators/golang/quickstart/)  
