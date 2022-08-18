@@ -96,9 +96,11 @@ func (r *AppServiceReconciler) ensureDeployment(ctx context.Context, req ctrl.Re
 		if errors.IsNotFound(err) {
 			err = r.Client.Create(ctx, resources.NewDeployment(instance))
 			if err != nil {
+				r.log.Error(err, "create deployment error")
 				return err
 			}
 		} else {
+			r.log.Error(err, "get deployment error")
 			return err
 		}
 	}
@@ -112,6 +114,7 @@ func (r *AppServiceReconciler) ensureDeployment(ctx context.Context, req ctrl.Re
 		newDeployment := resources.NewDeployment(instance)
 		deployment.Spec = newDeployment.Spec
 		if err := r.Client.Update(ctx, &deployment); err != nil {
+			r.log.Error(err, "update deployment error")
 			return err
 		}
 	}
@@ -127,9 +130,11 @@ func (r *AppServiceReconciler) ensureService(ctx context.Context, req ctrl.Reque
 	if err != nil {
 		if errors.IsNotFound(err) {
 			if err := r.Client.Create(ctx, resources.NewService(instance)); err != nil {
+				r.log.Error(err, "create service error")
 				return err
 			}
 		} else {
+			r.log.Error(err, "get service error")
 			return err
 		}
 	}
@@ -146,6 +151,7 @@ func (r *AppServiceReconciler) ensureService(ctx context.Context, req ctrl.Reque
 		service.Spec.ClusterIP = clusterIP // # Spec.ClusterIP is imutable
 
 		if err := r.Client.Update(ctx, &service); err != nil {
+			r.log.Error(err, "update service error")
 			return err
 		}
 	}

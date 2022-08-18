@@ -19,7 +19,7 @@ func NewDeployment(appService *appv1.AppService) *v1.Deployment {
 			Kind:       "Deployment",
 		},
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      appService.Name,
+			Name:      appService.ObjectMeta.Name,
 			Namespace: appService.Namespace,
 			// 标注主从关系
 			OwnerReferences: []metav1.OwnerReference{
@@ -31,6 +31,7 @@ func NewDeployment(appService *appv1.AppService) *v1.Deployment {
 			Selector: selector,
 			Template: corev1.PodTemplateSpec{
 				ObjectMeta: metav1.ObjectMeta{
+					Name:   appService.ObjectMeta.Name,
 					Labels: labels,
 				},
 				Spec: corev1.PodSpec{
@@ -54,7 +55,7 @@ func newContainers(appService *appv1.AppService) []corev1.Container {
 
 	return []corev1.Container{
 		corev1.Container{
-			Name:            appService.Name,
+			Name:            appService.ObjectMeta.Name,
 			Image:           appService.Spec.Image,
 			Ports:           containerPorts,
 			ImagePullPolicy: corev1.PullIfNotPresent,

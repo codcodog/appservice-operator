@@ -17,7 +17,7 @@ func NewService(appService *appv1.AppService) *corev1.Service {
 			Kind:       "Service",
 		},
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      appService.Name,
+			Name:      appService.ObjectMeta.Name,
 			Namespace: appService.Namespace,
 			// 标注主从关系
 			OwnerReferences: []metav1.OwnerReference{
